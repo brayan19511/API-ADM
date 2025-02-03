@@ -25,12 +25,13 @@ class ExcelNCRView(APIView):
         if not file:
             return Response({"err0r":"No se encontro ningung archivo"},status=status.HTTP_400_BAD_REQUEST)
         try:
-            modifier=ExcelModifier(file).generateDEF()
+            modifier=ExcelModifier(file).validate_columns().generateDEF()
 
             output=modifier.save_to_memory()
         except ValueError as e:
             return Response({"error":str(e)},status=status.HTTP_400_BAD_REQUEST)
-
+        except Exception as e:
+            return Response({"error": "Ocurrió un error inesperado"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         response=HttpResponse(output.read(),content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response["Content-Disposition"] = 'attachment; filename="archivo_modificado.xlsx"'
@@ -49,7 +50,9 @@ class ExcelPlantillaBCPView(APIView):
             output=modifier.save_to_memory()
         except ValueError as e:
             return Response({"error":str(e)},status=status.HTTP_400_BAD_REQUEST)
-
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         
         response=HttpResponse(output.read(),content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response["Content-Disposition"] = 'attachment; filename="archivo_modificado.xlsx"'

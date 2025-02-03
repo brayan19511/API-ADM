@@ -24,10 +24,10 @@ class ExcelModifier:
         """
         Veriifacion de columnas existentes
         """
-        missing_columns=self.colum-set(self.df.columns())
+        missing_columns=set(self.colum)-set(self.df.columns)
         if missing_columns:
             raise ValueError(f"Faltan las siguientes columnas requeridas: {', '.join(missing_columns)}")
-
+        return self
     def save_to_memory(self):
         """
         Guardar el dataframe en memoria como un archivo excel
@@ -48,52 +48,59 @@ class ExcelModifier:
     
     def generatePlantillaBCP(self):
         plantillaBcp=[]
-        for index,row in self.df.iterrows():
+        try:
+            # self.colum.append("Cuenta Seleccionada")
+            # self.colum.append("Clasificacion Doc")
+            # self.validate_columns("DEF FORMATEADO")
+            # self.validate_columns("Clasificacion Banco")
+            for index,row in self.df.iterrows():
 
-            fila1={
-                "Tipo de Registro":"A",
-                "Tipo de Cuenta de Abono":row["Clasificacion Banco"],
-                "Cuenta de Abono":row["Cuenta Seleccionada"],
-                "Tipo de Documento de Identidad":row["Clasificacion Doc"],
-                "Número de Documento de Identidad":row["DNI/RUC"],
-                "Correlativo de Documento de Identidad":"",
-                "Nombre del proveedor":row["NOMBRE CLIENTE/RAZÓN SOCIAL"],
-                "Tipo de Moneda de Abono":"S",
-                "Monto del Abono":row["IMPORTE"],
-                "Validación IDC del proveedor vs Cuenta":"S",
-                "Cantidad Documentos relacionados al Abono":"0001",
+                fila1={
+                    "Tipo de Registro":"A",
+                    "Tipo de Cuenta de Abono":row["Clasificacion Banco"],
+                    "Cuenta de Abono":row["Cuenta Seleccionada"],
+                    "Tipo de Documento de Identidad":row["Clasificacion Doc"],
+                    "Número de Documento de Identidad":row["DNI/RUC"],
+                    "Correlativo de Documento de Identidad":"",
+                    "Nombre del proveedor":row["NOMBRE CLIENTE/RAZÓN SOCIAL"],
+                    "Tipo de Moneda de Abono":"S",
+                    "Monto del Abono":row["IMPORTE"],
+                    "Validación IDC del proveedor vs Cuenta":"S",
+                    "Cantidad Documentos relacionados al Abono":"0001",
 
-                "Tipo de Documento a pagar":"",
-                "Nro. del Documento":"",
-                "Moneda Documento":"",
-                "Monto del Documento":"",
+                    "Tipo de Documento a pagar":"",
+                    "Nro. del Documento":"",
+                    "Moneda Documento":"",
+                    "Monto del Documento":"",
 
-            }
-            fila2={
-                "Tipo de Registro":"D",
-                "Tipo de Cuenta de Abono":"",
-                "Cuenta de Abono":"",
-                "Tipo de Documento de Identidad":"",
-                "Número de Documento de Identidad":"",
-                "Correlativo de Documento de Identidad":"",
-                "Nombre del proveedor":"",
-                "Tipo de Moneda de Abono":"",
-                "Monto del Abono":"",
-                "Validación IDC del proveedor vs Cuenta":"",
-                "Cantidad Documentos relacionados al Abono":"",
+                }
+                fila2={
+                    "Tipo de Registro":"D",
+                    "Tipo de Cuenta de Abono":"",
+                    "Cuenta de Abono":"",
+                    "Tipo de Documento de Identidad":"",
+                    "Número de Documento de Identidad":"",
+                    "Correlativo de Documento de Identidad":"",
+                    "Nombre del proveedor":"",
+                    "Tipo de Moneda de Abono":"",
+                    "Monto del Abono":"",
+                    "Validación IDC del proveedor vs Cuenta":"",
+                    "Cantidad Documentos relacionados al Abono":"",
 
-                "Tipo de Documento a pagar":"C",
-                "Nro. del Documento":row["DEF FORMATEADO"],
-                "Moneda Documento":"S",
-                "Monto del Documento":row["IMPORTE"]
+                    "Tipo de Documento a pagar":"C",
+                    "Nro. del Documento":row["DEF FORMATEADO"],
+                    "Moneda Documento":"S",
+                    "Monto del Documento":row["IMPORTE"]
 
-            }
+                }
 
-            plantillaBcp.append(fila1)
-            plantillaBcp.append(fila2)
+                plantillaBcp.append(fila1)
+                plantillaBcp.append(fila2)
 
 
-        self.df=pd.DataFrame(plantillaBcp)
+            self.df=pd.DataFrame(plantillaBcp)
+        except Exception as e:
+            raise ValueError(e)
         return self
 
     def platilla_bcp(self):

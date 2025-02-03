@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-_s59-=_++694r$6)oxvxn)6dg%r_-ayyxyie5#ernq1g*t&c^1
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
     'django-webapp-bkczc4c4fqbggbeb.canadacentral-01.azurewebsites.net'
 ]
 
@@ -134,4 +136,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5174',
     'https://coolbox-adm.netlify.app'
+]
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'accept',
+    'Authorization',
+    # otras cabeceras que puedas necesitar
 ]
