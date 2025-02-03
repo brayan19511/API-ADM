@@ -135,7 +135,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5174',
-    'https://coolbox-adm.netlify.app'
+    'https://coolbox-adm.netlify.app',
+    'https://django-webapp-bkczc4c4fqbggbeb.canadacentral-01.azurewebsites.net/'
 ]
 
 CORS_ALLOW_HEADERS = [
